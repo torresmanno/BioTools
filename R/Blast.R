@@ -30,49 +30,6 @@ make.DB <- function(path="FASTA/", pattern=".faa", outpath="DB/", dbtype){
   sapply(cmds.db, system)
 }
 
-# make.BLAST --------------------------------------------------------------
-
-make.BLAST <- function(path="./DB/", queryfile="markers", BEST=T, blast.type="blastn", evalue="1e-5", outpath="./BLAST/NRPS/TablaI/", pattern = "_representative.db.nsq|_reference.db.nsq|_type.db.nsq") {
-  if(BEST==T){
-    targets <- " -max_target_seqs 1"
-  }else {
-    targets <- " "
-  }
-
-  ## create output folder
-  dir.create(outpath, showWarnings = F, recursive = T)
-  # prepare data info
-  db.list <- list.files(path, pattern = pattern)  # Look for blastdb
-  db.infile <- paste(path, unlist(sapply(db.list, strsplit, split = "*.nsq")), sep = "") # define db to blast
-  outnames.blast <- paste(outpath, unlist(sapply(db.list, strsplit, split = "*.db.nsq")), # define name of outfile
-                          ".blast.tsv", sep = "")
-  ## create commands function
-  cmdCreate.blast <- function(db, queryfile, outfile){
-    paste(blast.type, " -query ", queryfile, " -evalue ", evalue," -db ",  db,  " -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'", targets, " -num_threads 4 -out ",
-          outfile, sep = "")
-  }
-  ## create actual commands
-  cmds.blast <- mapply(FUN = cmdCreate.blast, db = db.infile, queryfile, outfile = outnames.blast)
-  ## run commands
-  sapply(cmds.blast, system)
-  ##move your data to ./Retrive.Blast Directory
-}
-
-
-blast_bu <- function(query.fasta, strains, db.path, output, blast.type = "blastn", pattern = "_genomic.db", outfmt = 6, evalue = "1e-5"){
-  if (outfmt == 6){
-    out.fmt = "'6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'"
-  }else {
-    out.fmt = outfmt
-  }
-  cmd.blast <- function(){
-    paste0(blast.type, " -query ", query.fasta," -evalue ", evalue, " -db ",db.path, strains, pattern," -outfmt ", out.fmt, " -num_threads 8 -max_target_seqs 1 -out ", output, strains, ".tsv")
-  }
-  cmds <- cmd.blast()
-  dir.create(output, showWarnings = F, recursive = T)
-
-  null <- sapply(cmds, system)
-}
 
 #' blast
 #'

@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+BioTools.Rproj
+.Rbuildignore
+R/backup
+man
+data
+tests
