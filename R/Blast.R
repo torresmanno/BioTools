@@ -54,7 +54,7 @@ make.DB <- function(path="FASTA/", pattern=".faa", outpath="DB/", dbtype){
 #'           query = "FZB42_cds.fasta",
 #'           subject = paste0("Genomes/", s, "_genomic.fna"),
 #'           output = paste0("blast/FZB42_", s, "_blast.tsv"))
-#'     })
+#'     }, simplify = F, USE.NAMES = T)
 
 blast <- function(type, query, subject, output, evalue = "1e-5"){
   out.fmt = "'6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'"
@@ -85,7 +85,7 @@ blast <- function(type, query, subject, output, evalue = "1e-5"){
 #'              query = "FZB42_cds.fasta",
 #'              db = paste0("Genomes/", s, "_genomic.db"),
 #'              output = paste0("blast/FZB42_", s, "_blast.tsv"))
-#'     })
+#'     }, simplify = F, USE.NAMES = T)
 blast.db <- function(type, query, db, output, evalue = "1e-5", threads = 1){
   out.fmt = "'6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'"
   cmd.blast <- paste0(type, " -query ", query," -evalue ", evalue, " -db ", db, " -outfmt ", out.fmt, " -max_target_seqs 1 -num_threads ", threads, " -out ", output)
