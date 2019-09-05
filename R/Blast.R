@@ -72,7 +72,7 @@ blast <- function(type, query, subject, output, evalue = "1e-5"){
 #' @param threads number of threads
 #'
 #'
-#' @return
+#' @return nothing
 #' @export
 #'
 #' @examples blast.db("blastn", "FZB42_cds.fasta", "168_genomic.db", "FZB42_168_blast.tsv")
