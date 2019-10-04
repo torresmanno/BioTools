@@ -4,6 +4,7 @@
 #' @param type "genome", "protein", "cds" or "feature" to download
 #' @param outpath path where the files will be stored
 #'
+#' @import R.utils
 #' @return
 #' @export
 #'
