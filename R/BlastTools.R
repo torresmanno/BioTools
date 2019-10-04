@@ -6,6 +6,8 @@
 #' @param coverage numeric coverage cutoff
 #' @param id.cutoff numeric, identity percent cutoff
 #'
+#' @import dplyr
+#' @import magrittr
 #' @return return a list with the data frames with the tables
 #' @export
 #'
@@ -21,7 +23,8 @@ orthoBlast <- function(raw.blast, coverage, id.cutoff){
     filter(.[[3]] >= id.cutoff) %>%
     arrange(.[[1]], desc(.[[12]])) %>%
     group_by(.[[1]]) %>% slice(1) %>%
-    ungroup()
+    ungroup() %>%
+    select(-`.[[1]]`)
   return(df.out)
 }
 
@@ -50,6 +53,9 @@ clean.by.sub <- function(df, cov, id){
 #' @param df data freame of the blast table
 #' @param id numeric, percent identity cutoff
 #' @param cov numeric, coverage cutoff
+#'
+#' @import dplyr
+#' @import magrittr
 #'
 #' @return data frame of two columns with the orthologous pairs
 #' @export

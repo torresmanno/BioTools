@@ -17,7 +17,6 @@
 #'
 
 ReadBlastTables <- function(files){
-  blast.table.list <- sapply(strain, function(s){
     t <- try(read.table( files,
                          header = F,
                          fill = T,
@@ -27,9 +26,6 @@ ReadBlastTables <- function(files){
     } else{
       return(t)
     }
-  }, simplify = F, USE.NAMES = T)
-
-  return(blast.table.list)
 }
 
 #' ReadBlastTables.inpath

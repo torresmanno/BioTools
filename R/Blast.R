@@ -14,7 +14,6 @@
 make.DB <- function(path="FASTA/", pattern=".faa", outpath="DB/", dbtype){
 
   input.genomes <- list.files(path = path, pattern = pattern)
-  numfiles <- length(input.genomes)
   outnames.db <- paste(outpath, unlist(sapply(input.genomes, strsplit, split = pattern)),
                        ".db", sep = "")
   ## create commands function
@@ -59,6 +58,7 @@ make.DB <- function(path="FASTA/", pattern=".faa", outpath="DB/", dbtype){
 blast <- function(type, query, subject, output, evalue = "1e-5"){
   out.fmt = "'6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'"
   cmd.blast <- paste0(type, " -query ", query," -evalue ", evalue, " -subject ", subject, " -outfmt ", out.fmt, " -max_target_seqs 1 -out ", output)
+  system(cmd.blast)
 }
 
 
@@ -89,4 +89,5 @@ blast <- function(type, query, subject, output, evalue = "1e-5"){
 blast.db <- function(type, query, db, output, evalue = "1e-5", threads = 1){
   out.fmt = "'6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovhsp'"
   cmd.blast <- paste0(type, " -query ", query," -evalue ", evalue, " -db ", db, " -outfmt ", out.fmt, " -max_target_seqs 1 -num_threads ", threads, " -out ", output)
+  system(cmd.blast)
 }
