@@ -51,7 +51,7 @@ get.gen <- function(Genome.path= "../Genome.FASTA", Genome.pattern = "_genomic.f
   sec.genomes <- seqinr::read.fasta(file = paste0(Genome.path, "/", Genome, Genome.pattern), seqtype = "DNA")
 
   getGen <- function(Gene) {
-    Gen.num <- grep(Gene,merged.blast.result[[1]])
+    Gen.num <- match(Gene,merged.blast.result[[1]])
     Gene.coding <- merged.blast.result[Gen.num,paste0(Genome,".Start")] <  merged.blast.result[Gen.num,paste0(Genome,".End")]
     ##identificar nombre contig
     Gene.contig <- as.character(merged.blast.result[Gen.num,paste(Genome,".Contig", sep="")])
@@ -122,7 +122,7 @@ clustalo <- function(path = "HK.multif", threads = 8){
 }
 
 mafft <- function(path = "multif", threads = 8){
-  path.to.files <- list.files(path, full.names = T)
+  path.to.files <- list.files(path, pattern = ".fasta" full.names = T)
   file.name <- list.files(path)
   dir.create(paste0(path,"/aln"), showWarnings = F)
   clines <- paste0("mafft --auto ", path, "/", file.name," > ", path,"/aln/", gsub("fasta","aln.fasta", file.name))
@@ -143,7 +143,7 @@ mafft <- function(path = "multif", threads = 8){
 #' @export
 #'
 #' @examples
-gBlock.R <- function(path2Gblock ="/media/intercambio/Mariano/Martin/Soft/Gblocks_0.91b/", type="d", path= ".", pattern= ".aln.fasta", out.pattern = ".gb"){
+gBlock.R <- function(path2Gblock ="~/bin/Gblocks_0.91b/", type="d", path= ".", pattern= ".aln.fasta", out.pattern = ".gb"){
   input.aln <- list.files(path =  path, pattern = pattern, full.names = T)
   numfiles <- length(input.aln)
   paste(path2Gblock, "Gblocks ", input.aln," -t=", type, " -e=", out.pattern, " >> /dev/null", sep="")
@@ -180,7 +180,7 @@ remove_space <- function(path, pattern) {
 Concatenate_amas <- function(amas.file, path, pattern, n) {
   input.aln <- list.files(path = path, pattern = pattern, full.names = T)
   concatenate.core.cmd <- paste(input.aln, collapse = " ")
-  concatenate.core.cmd <- paste0("python3.6 ", amas.file, " concat -f fasta -d dna -i ", concatenate.core.cmd, " -u fasta -p ", path, n,"_genes.partition.txt -t ",path, n, "_genes.fasta", sep = " ")
+  concatenate.core.cmd <- paste0("python3.9 ", amas.file, " concat -f fasta -d dna -i ", concatenate.core.cmd, " -u fasta -p ", path, n,"_genes.partition.txt -t ",path, n, "_genes.fasta", sep = " ")
   system(concatenate.core.cmd)
   concatenate.file <- gsub("=", " = ", paste("DNA,", readLines(con= paste0(path, n, "_genes.partition.txt")), sep=""))
   writeLines(text=concatenate.file, con= paste0(path, n, "_genes.partition.txt"))

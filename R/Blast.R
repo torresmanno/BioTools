@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples make.DB(path = "Fasta/", pattern = ".faa", outpath = "DB/", dbtype = "prot")
-make.DB <- function(path="FASTA/", pattern=".faa", outpath="DB/", dbtype){
+make.DB <- function(path="FASTA/", pattern=".fna", outpath="DB/", dbtype = "nucl"){
 
   input.genomes <- list.files(path = path, pattern = pattern)
   outnames.db <- paste(outpath, unlist(sapply(input.genomes, strsplit, split = pattern)),

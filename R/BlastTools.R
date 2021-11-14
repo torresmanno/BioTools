@@ -27,6 +27,14 @@ orthoBlast <- function(raw.blast, coverage, id.cutoff){
     select(-`.[[1]]`)
   return(df.out)
 }
+orthoBlast.batch <- function(raw.blast, coverage, id.cutoff){
+  lapply(raw.blast, function(b){
+    t1 <- b[b[[13]] >= coverage, ]
+    t2 <- t1[t1[[3]] >= id.cutoff, ]
+    t2 <- t2[order(t2[[1]], t2[[12]], decreasing = T), ]
+    t3 <- t2[!duplicated(t2[[1]]), ]
+  })
+}
 
 #' clean.by.sub
 #'

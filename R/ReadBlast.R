@@ -59,3 +59,19 @@ ReadBlastTables.inpath <- function(inpath,pattern){
   return(blast.table.list)
 }
 
+
+ReadBlastTables.batch <- function(strain, inpath, pattern){
+  blast.table.list <- sapply(strain, function(s){
+    t <- try(read.table( paste0(inpath, s, pattern),
+                         header = F,
+                         fill = T,
+                         stringsAsFactors = F),silent = T)
+    if(inherits(t, "try-error")){
+      return(NULL)
+    } else{
+      return(t)
+    }
+  }, simplify = F, USE.NAMES = T)
+
+  return(blast.table.list)
+}
